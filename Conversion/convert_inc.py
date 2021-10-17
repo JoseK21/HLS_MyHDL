@@ -1,21 +1,31 @@
-from myhdl import Signal, ResetSignal, modbv
+from myhdl import Signal, ResetSignal, modbv, always, block, delay, instance, StopSimulation
 
 from inc import inc
 
-def convert_inc(hdl):
+@block
+def convert_inc():
     """Convert inc block to Verilog or VHDL."""
 
-    m = 8
-
-    count = Signal(modbv(0)[m:])
+    count = Signal(bool(0))
     enable = Signal(bool(0))
     clock  = Signal(bool(0))
     reset = ResetSignal(0, active=0, isasync=True)
 
     inc_1 = inc(count, enable, clock, reset)
+    
+    @always(delay(10))
+    def clkgen():
+        clock.next = not clock
 
-    inc_1.convert(hdl=hdl)
+    @instance
+    def stimulus():
+        for i in range(10):
+            clock.next = not clock
+            delay(10)
+        raise StopSimulation()
 
+    return inc_1, stimulus, clkgen
 
-convert_inc(hdl='Verilog')
-convert_inc(hdl='VHDL')
+tb = convert_inc()
+tb.config_sim(trace=True)
+tb.run_sim()

@@ -1,4 +1,4 @@
-from myhdl import block, always_comb, Signal
+from myhdl import block, always_comb
 
 @block
 def mux(z, a, b, sel):
