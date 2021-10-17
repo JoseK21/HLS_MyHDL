@@ -1,7 +1,13 @@
+import random
 from myhdl import block, always_seq
 
+from datetime import datetime
+
+random.seed(datetime.now().second)
+randrange = random.randrange
+
 @block
-def inc(count, enable, clock, reset):
+def newBit(count, enable, clock, reset):
     """ Incrementer with enable.
 
     count -- output
@@ -13,6 +19,6 @@ def inc(count, enable, clock, reset):
     @always_seq(clock.posedge, reset=reset)
     def seq():
         if enable:
-            count.next = count + 1
+            count.next = randrange(2) # 1 or 0
 
     return seq

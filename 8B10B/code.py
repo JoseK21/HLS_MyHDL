@@ -1,4 +1,8 @@
-from myhdl import block, Signal, enum, intbv, always_comb
+from myhdl import block, Signal, enum, intbv, always_comb, always_seq
+import random
+
+random.seed(5)
+randrange = random.randrange
 
 _3B4BEncodingValues = ['0100', '1001', '0101', '0011', '0010', '1010', '0110', '0001']
 
@@ -8,7 +12,6 @@ _5B6BEncodingValues = ['100111', '011101', '101101', '110001', '110101', '101001
 
 # @block
 # def convert8B10B():
-
 
 # input = 250  # 111 11010
 input = 156  # 100 11100
@@ -26,6 +29,12 @@ def prints(din):
     print('Output: ', _abcdei, _fghj)
     print('~~~~~~~~~~~~~~~~~~~~')
 
+def inc(count, clock):
+    @always_seq(clock.posedge, reset=0)
+    def seq():
+        count.next = randrange(2) # 1 or 0
+
+    return seq
 
 def main():
     clk = Signal(bool(0))

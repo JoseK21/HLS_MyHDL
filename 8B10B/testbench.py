@@ -1,22 +1,26 @@
 import random
 from myhdl import block, always, instance, Signal, \
-    ResetSignal, modbv, delay, StopSimulation
-from inc import inc
+    ResetSignal, modbv, intbv, delay, StopSimulation
 
-random.seed(1)
+from newBit import newBit
+
+from datetime import datetime
+
+random.seed(datetime.now().second)
 randrange = random.randrange
 
 ACTIVE_LOW, INACTIVE_HIGH = 0, 1
 
+DATA_IN_BITS = 8
+
 @block
 def testbench():
-    m = 3
-    count = Signal(modbv(0)[m:])
+    count = Signal(bool(0))
     enable = Signal(bool(0))
     clock  = Signal(bool(0))
     reset = ResetSignal(0, active=0, isasync=True)
 
-    inc_1 = inc(count, enable, clock, reset)
+    inc_1 = newBit(count, enable, clock, reset)
 
     HALF_PERIOD = delay(10)
 
@@ -26,11 +30,12 @@ def testbench():
 
     @instance
     def stimulus():
-        reset.next = ACTIVE_LOW
-        yield clock.negedge
         reset.next = INACTIVE_HIGH
-        for i in range(16):
-            enable.next = min(1, randrange(3))
+        yield clock.negedge
+        # reset.next = INACTIVE_HIGH
+        for i in range(8):
+            enable.next = 1
+            print(int(count), end='')
             yield clock.negedge
         raise StopSimulation()
 
