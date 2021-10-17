@@ -7,18 +7,10 @@ random.seed(datetime.now().second)
 randrange = random.randrange
 
 @block
-def newBit(count, enable, clock, reset):
-    """ Incrementer with enable.
-
-    count -- output
-    enable -- control input, increment when 1
-    clock -- clock input
-    reset -- asynchronous reset input
-    """
-    
+def newBit(clock, enable, reset, bit_in):  
     @always_seq(clock.posedge, reset=reset)
     def seq():
         if enable:
-            count.next = randrange(2) # 1 or 0
+            bit_in.next = randrange(2) # 1 or 0
 
     return seq
