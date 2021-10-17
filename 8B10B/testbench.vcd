@@ -1,5 +1,5 @@
 $date
-    Sun Oct 17 02:14:33 2021
+    Sun Oct 17 13:10:31 2021
 $end
 $version
     MyHDL 0.11
@@ -14,22 +14,33 @@ $var reg 1 " enable $end
 $var reg 1 # reset $end
 $var reg 3 $ HGF $end
 $var reg 5 % EDCBA $end
-$var reg 1 & bit_in $end
-$var reg 1 ' clock $end
+$var reg 6 & abcdei $end
+$var reg 1 ' bit_in $end
+$var reg 1 ( clock $end
+$var reg 4 ) fghj $end
 $scope module newBit0 $end
-$var reg 1 ' clock $end
+$var reg 1 ( clock $end
 $var reg 1 # reset $end
-$var reg 1 & bit_in $end
+$var reg 1 ' bit_in $end
 $var reg 1 " enable $end
 $upscope $end
 $scope module convert8b10b0 $end
-$var reg 1 ' clock $end
+$var reg 1 ( clock $end
 $var reg 1 # reset $end
 $var reg 1 ! bit_out $end
 $var reg 5 % EDCBA $end
 $var reg 3 $ HGF $end
-$var reg 1 & bit_in $end
-$var reg 3 ( i $end
+$var reg 1 ' bit_in $end
+$var reg 3 * i $end
+$upscope $end
+$scope module convert10b0 $end
+$var reg 1 ( clock $end
+$var reg 1 # reset $end
+$var reg 5 % EDCBA $end
+$var reg 3 $ HGF $end
+$var reg 6 & abcdei $end
+$var reg 4 ) fghj $end
+$var reg 3 + i $end
 $upscope $end
 $upscope $end
 
@@ -40,55 +51,66 @@ $dumpvars
 1#
 b000 $
 b00000 %
-0&
+b000000 &
 0'
-b000 (
+0(
+b0000 )
+b000 *
+b000 +
 $end
 #5
+1(
 1'
-b001 (
+b001 *
+b001 +
 #10
-0'
+0(
 #15
-1'
-b010 (
-1&
+1(
+b010 +
+b010 $
+b010 *
+0'
 #20
-0'
+0(
 #25
+1(
 1'
-b100 $
-b011 (
+b011 *
+b0101 )
+b011 +
 #30
-0'
+0(
 #35
-1'
-b00001 %
-b100 (
-0&
+1(
+b100 +
+b10000 %
+b100 *
+0'
 #40
-0'
+0(
 #45
-1'
-1&
-b101 (
+1(
+b101 *
+b101 +
 #50
-0'
+0(
 #55
-1'
-b00101 %
-b110 (
+1(
+b110 +
+b110 *
 #60
-0'
+0(
 #65
-1'
-b01101 %
-b111 (
+1(
+b111 *
+b111 +
 #70
-0'
+0(
 #75
-1'
-b11101 %
-b000 (
+1(
+b011011 &
+b000 +
+b000 *
 #80
-0'
+0(

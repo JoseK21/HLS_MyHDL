@@ -6,8 +6,8 @@ from datetime import datetime
 random.seed(datetime.now().second)
 randrange = random.randrange
 
-base2 = [1, 2, 4, 8, 16, 32]
-
+base2_3 = [4, 2, 1]
+base2_5 = [16, 8, 4, 2, 1]
 
 @block
 def convert8b10b(clock, bit_in, reset, HGF, EDCBA, bit_out):
@@ -17,16 +17,13 @@ def convert8b10b(clock, bit_in, reset, HGF, EDCBA, bit_out):
     def seq():
         if(i < 3):
             if(bit_in):
-                HGF.next = HGF + base2[i]
-            # bit_out.next = bit_in
+                HGF.next = HGF + base2_3[i]
         else:
             if(bit_in):
-                EDCBA.next = EDCBA + base2[i - 3]
-            # bit_out.next = bit_in
+                EDCBA.next = EDCBA + base2_5[i - 3]
         if(i >= 8):
             i.next = 0
 
-        # print(int(i), end='')
         i.next = i + 1
 
     return seq
