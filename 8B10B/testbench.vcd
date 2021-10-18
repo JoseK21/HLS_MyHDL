@@ -1,5 +1,5 @@
 $date
-    Sun Oct 17 13:10:31 2021
+    Mon Oct 18 00:30:20 2021
 $end
 $version
     MyHDL 0.11
@@ -9,108 +9,192 @@ $timescale
 $end
 
 $scope module testbench $end
-$var reg 1 ! bit_out $end
-$var reg 1 " enable $end
-$var reg 1 # reset $end
+$var reg 1 ! enable $end
+$var reg 1 " reset $end
+$var reg 4 # disparity $end
 $var reg 3 $ HGF $end
 $var reg 5 % EDCBA $end
 $var reg 6 & abcdei $end
 $var reg 1 ' bit_in $end
 $var reg 1 ( clock $end
 $var reg 4 ) fghj $end
-$scope module newBit0 $end
+$scope module newBit $end
 $var reg 1 ( clock $end
-$var reg 1 # reset $end
+$var reg 1 " reset $end
 $var reg 1 ' bit_in $end
-$var reg 1 " enable $end
+$var reg 3 * counter $end
+$var reg 1 ! enable $end
 $upscope $end
-$scope module convert8b10b0 $end
+$scope module convert8b10b $end
 $var reg 1 ( clock $end
-$var reg 1 # reset $end
-$var reg 1 ! bit_out $end
+$var reg 1 " reset $end
 $var reg 5 % EDCBA $end
 $var reg 3 $ HGF $end
 $var reg 1 ' bit_in $end
-$var reg 3 * i $end
-$upscope $end
-$scope module convert10b0 $end
-$var reg 1 ( clock $end
-$var reg 1 # reset $end
-$var reg 5 % EDCBA $end
-$var reg 3 $ HGF $end
-$var reg 6 & abcdei $end
-$var reg 4 ) fghj $end
 $var reg 3 + i $end
+$upscope $end
+$scope module convert10b $end
+$var reg 1 ( clock $end
+$var reg 1 " reset $end
+$var reg 5 % EDCBA $end
+$var reg 3 $ HGF $end
+$var reg 6 & abcdei $end
+$var reg 4 ) fghj $end
+$var reg 3 , i $end
+$scope module mem5_6 $end
+$var reg 5 - mem5_6(0) $end
+$var reg 5 . mem5_6(1) $end
+$var reg 5 / mem5_6(2) $end
+$var reg 5 0 mem5_6(3) $end
+$var reg 5 1 mem5_6(4) $end
+$var reg 5 2 mem5_6(5) $end
+$var reg 5 3 mem5_6(6) $end
+$var reg 5 4 mem5_6(7) $end
+$var reg 5 5 mem5_6(8) $end
+$var reg 5 6 mem5_6(9) $end
+$var reg 5 7 mem5_6(10) $end
+$var reg 5 8 mem5_6(11) $end
+$var reg 5 9 mem5_6(12) $end
+$var reg 5 : mem5_6(13) $end
+$var reg 5 ; mem5_6(14) $end
+$var reg 5 < mem5_6(15) $end
+$var reg 5 = mem5_6(16) $end
+$var reg 5 > mem5_6(17) $end
+$var reg 5 ? mem5_6(18) $end
+$var reg 5 @ mem5_6(19) $end
+$var reg 5 A mem5_6(20) $end
+$var reg 5 B mem5_6(21) $end
+$var reg 5 C mem5_6(22) $end
+$var reg 5 D mem5_6(23) $end
+$var reg 5 E mem5_6(24) $end
+$var reg 5 F mem5_6(25) $end
+$var reg 5 G mem5_6(26) $end
+$var reg 5 H mem5_6(27) $end
+$var reg 5 I mem5_6(28) $end
+$var reg 5 J mem5_6(29) $end
+$var reg 5 K mem5_6(30) $end
+$var reg 5 L mem5_6(31) $end
+$upscope $end
 $upscope $end
 $upscope $end
 
 $enddefinitions $end
 $dumpvars
-0!
+1!
 1"
-1#
+b0000 #
 b000 $
 b00000 %
 b000000 &
 0'
 0(
 b0000 )
-b000 *
+b111 *
 b000 +
+b000 ,
+b00111 -
+b11101 .
+b01101 /
+b10001 0
+b10101 1
+b01001 2
+b11001 3
+b11000 4
+b11001 5
+b00101 6
+b10101 7
+b10100 8
+b01101 9
+b01100 :
+b11100 ;
+b10111 <
+b11011 =
+b00011 >
+b10011 ?
+b10010 @
+b01011 A
+b01010 B
+b11010 C
+b11010 D
+b10011 E
+b00110 F
+b10110 G
+b10110 H
+b01110 I
+b01110 J
+b11110 K
+b01011 L
 $end
-#5
+#10
 1(
 1'
-b001 *
+b110 *
 b001 +
-#10
-0(
-#15
-1(
-b010 +
-b010 $
-b010 *
-0'
 #20
 0(
-#25
-1(
-1'
-b011 *
-b0101 )
-b011 +
+b001 ,
 #30
-0(
-#35
 1(
-b100 +
-b10000 %
-b100 *
-0'
+b010 $
+b010 +
+b101 *
 #40
 0(
-#45
-1(
-b101 *
-b101 +
+b010 ,
 #50
-0(
-#55
 1(
-b110 +
-b110 *
+b100 *
+b011 $
+b011 +
 #60
 0(
-#65
-1(
-b111 *
-b111 +
+b0011 )
+b011 ,
 #70
-0(
-#75
 1(
-b011011 &
-b000 +
-b000 *
+b10000 %
+b100 +
+b011 *
 #80
+0(
+b100 ,
+#90
+1(
+b010 *
+b11000 %
+b101 +
+#100
+0(
+b101 ,
+#110
+1(
+b11100 %
+b110 +
+b001 *
+#120
+0(
+b110 ,
+#130
+1(
+b000 *
+b11110 %
+b111 +
+#140
+0(
+b111 ,
+#150
+1(
+b11111 %
+b000 +
+b111 *
+#160
+0(
+b101011 &
+b000 ,
+#170
+1(
+b110 *
+b111 $
+b001 +
+#180
 0(

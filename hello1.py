@@ -13,4 +13,6 @@ def HelloWorld(): # parameter list is used to define the ->interface<- of the ha
     return say_hello
 
 inst = HelloWorld() # instance of a hardware bloc
+inst.convert(hdl='Verilog')
+
 inst.run_sim(40) # To simulate the instance, 30: timesteps

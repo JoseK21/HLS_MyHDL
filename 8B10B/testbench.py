@@ -4,7 +4,7 @@ import time
 
 from myhdl import block, always, instance, Signal, ResetSignal, modbv, intbv, delay, StopSimulation
 
-from help import convert8b10b, newBit, convert10b, getDisparity, CODE_INPUT
+from help import convert8b10b, newBit, convert10b, getDisparity
 
 from datetime import datetime
 
@@ -23,8 +23,7 @@ CICLO_RELOJ = 10
 
 @block
 def testbench(hdl):
-    bit_in = Signal(bool(CODE_INPUT[0]))
-    bit_out = Signal(bool(0))
+    bit_in = Signal(bool(0))
 
     enable = Signal(bool(1))
     clock  = Signal(bool(0))
@@ -32,6 +31,9 @@ def testbench(hdl):
     # disparity = Signal(intbv(0)[2:0])
     disparity = Signal(intbv(0, min=-7, max=7))
 
+    # -----------------------
+    data = intbv(255)
+    # -----------------------
 
     HGF = Signal(intbv(0)[3:0])
     EDCBA = Signal(intbv(0)[5:0])
@@ -39,15 +41,15 @@ def testbench(hdl):
     abcdei =  Signal(intbv(0)[6:0])
     fghj =  Signal(intbv(0)[4:0])
 
-    inc_1 = newBit(clock, enable, reset, bit_in)
+    inc_1 = newBit(data, clock, enable, reset, bit_in)
 
-    inc_2 = convert8b10b(clock, bit_in, reset, HGF, EDCBA, bit_out)
+    inc_2 = convert8b10b(clock, bit_in, reset, HGF, EDCBA)
 
     inc_3 = convert10b(clock, reset, HGF, EDCBA, fghj, abcdei)
 
-    # inc_1.convert(hdl=hdl)
-    # inc_2.convert(hdl=hdl)
-    # inc_3.convert(hdl=hdl)
+    inc_1.convert(hdl=hdl)
+    inc_2.convert(hdl=hdl)
+    inc_3.convert(hdl=hdl)
 
     # inc_4 = getDisparity(clock, reset, fghj, abcdei, disparity)
 
@@ -59,15 +61,19 @@ def testbench(hdl):
 
     @instance
     def stimulus():
-        for i in range(8):
-            print(int(bit_in), end='')
-            if(i == 2):
+        print('\nInput: ', end='')
+
+        for i in range(9):
+            if(i > 0):
+                print(int(bit_in), end='')
+            if(i == 3):
                 print(' ', end='')
 
-            yield clock.negedge
-            # display()
-        yield delay(1)
-        print('\n', format(int(abcdei), '06b'), format(int(fghj), '04b'))
+            yield clock.negedge # negedge } posedge
+        # yield delay(1)
+        print('\nOutput: ', end='')
+
+        print(format(int(abcdei), '06b'), format(int(fghj), '04b'))
         # print('Disparity: ', int(disparity))
         raise StopSimulation()
 
