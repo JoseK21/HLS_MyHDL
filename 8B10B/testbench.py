@@ -51,7 +51,7 @@ def testbench(hdl):
     inc_2.convert(hdl=hdl)
     inc_3.convert(hdl=hdl)
 
-    # inc_4 = getDisparity(clock, reset, fghj, abcdei, disparity)
+    inc_4 = getDisparity(clock, reset, fghj, abcdei, disparity)
 
     # HALF_PERIOD = delay(5)
 
@@ -74,10 +74,10 @@ def testbench(hdl):
         print('\nOutput: ', end='')
 
         print(format(int(abcdei), '06b'), format(int(fghj), '04b'))
-        # print('Disparity: ', int(disparity))
+        print('Disparity: ', int(disparity))
         raise StopSimulation()
 
-    return clockGen, stimulus, inc_1, inc_2, inc_3 #, inc_4
+    return clockGen, stimulus, inc_1, inc_2, inc_3, inc_4
 
 tb = testbench(hdl='Verilog')
 tb.config_sim(trace=True)

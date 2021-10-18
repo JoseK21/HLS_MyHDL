@@ -166,22 +166,24 @@ def getDisparity(clock, reset, fghj, abcdei, disparity):
     @always_seq(clock.negedge, reset=reset)
     def seq():
         if(a == 7):
-            # for a in range(10):
+            delay(1)
+
             print('\n>>>>>>>>', abcdei, fghj)
-        # if(a < 4):
-        #     if(fghj[a+1:a]):
-        #         c1.next = c1 + 1
-        #     else:
-        #         c0.next = c0 - 1
-        # else:
-        #     if(abcdei[a-4+1:a-4]):
-        #         c1.next = c1 + 1
-        #     else:
-        #         c0.next = c0 - 1
+            print('\n c0 >', c0)
+            print('\n c1 >', c1)       
+
+        elif(a < 8):
+            if(a < 4):
+                if(bool(fghj[a+1:a])):
+                    c1.next = c1 + 1
+                else:
+                    c0.next = c0 + 1
+            else:
+                if(bool(abcdei[a-4+1:a-4])):
+                    c1.next = c1 + 1
+                else:
+                    c0.next = c0 + 1
 
         a.next = a + 1
-        # print('\n0s ~ ', int(c0))
-        # print('\n1s ~ ', int(c1))
-
 
     return seq
