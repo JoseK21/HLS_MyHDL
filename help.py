@@ -3,21 +3,15 @@ from myhdl import block, always_seq, Signal, modbv, delay, always, intbv
 
 from datetime import datetime
 
-# random.seed(datetime.now().second)
-# randrange = random.randrange
-
 random.seed(5)
 randrange = random.randrange
 
 base2_3 = [4, 2, 1]
 base2_5 = [16, 8, 4, 2, 1]
-_3B4BEncodingValues = [4, 9, 5, 3, 2, 10, 6, 1]
-_5B6BEncodingValues = [39, 29, 45, 49, 53, 41, 25, 56, 57, 37, 21, 52, 13, 44, 28, 23, 27, 35, 19, 50, 11, 42, 26, 58, 51, 38, 22, 54, 14, 46, 30, 43]
-
 
 @block
 def newBit(data, clock, enable, reset, bit_in):
-    counter = Signal(modbv(0, min=0, max=16))
+    counter = Signal(modbv(7, min=0, max=8))
 
     @always_seq(clock.posedge, reset=reset)
     def seq():
@@ -25,17 +19,15 @@ def newBit(data, clock, enable, reset, bit_in):
             bit_in.next = data[counter + 1: counter] # 1 or 0
         counter.next = counter - 1
 
-    return seq #, getRandom
+    return seq
 
 @block
 def convert10b(clock, reset, HGF, EDCBA, fghj, abcdei):
     i = Signal(modbv(0, min=0, max=16))
 
-    @always_seq(clock.negedge, reset=reset)
+    @always_seq(clock.posedge, reset=reset)
     def seq():
-        # print('i >', i)
-
-        if(i == 2): # 3er item
+        if(i == 3): # 3er item
             if(HGF == 0):
                 fghj.next = 4
             elif(HGF == 1):
@@ -53,7 +45,6 @@ def convert10b(clock, reset, HGF, EDCBA, fghj, abcdei):
             elif(HGF == 7):
                 fghj.next = 1              
         if(i == 8): # 8to item
-            # print('\n >>> ', int(EDCBA))
             if(EDCBA == 0):
                 abcdei.next = 39
             elif(EDCBA == 1):
@@ -62,9 +53,9 @@ def convert10b(clock, reset, HGF, EDCBA, fghj, abcdei):
                 abcdei.next = 45
             elif(EDCBA == 3):
                 abcdei.next = 49
-            elif(EDCBA == 4):
+            elif(EDCBA == 4): # 00100
                 abcdei.next = 53
-            elif(EDCBA == 5):
+            elif(EDCBA == 5): # 00101
                 abcdei.next = 41
             elif(EDCBA == 6):
                 abcdei.next = 25
@@ -118,16 +109,17 @@ def convert10b(clock, reset, HGF, EDCBA, fghj, abcdei):
                 abcdei.next = 30
             elif(EDCBA == 31):
                 abcdei.next = 43
-
+    
         i.next = i + 1
 
     return seq
 
 @block
 def convert8b10b(clock, bit_in, reset, HGF, EDCBA):
-    i = Signal(modbv(0, min=0, max=16))
+    i = Signal(modbv(0, min=0, max=8))
 
-    @always_seq(clock.posedge, reset=reset)
+    # @always(delay(11))
+    @always_seq(clock.negedge, reset=reset)
     def seq():
         if(i < 3):
             if(bit_in):
@@ -140,15 +132,15 @@ def convert8b10b(clock, bit_in, reset, HGF, EDCBA):
         else:
             if(bit_in):
                 if(i == 3):
-                    EDCBA.next = EDCBA + 16 
+                    EDCBA.next = EDCBA + 16
                 elif(i == 4):
-                    EDCBA.next = EDCBA + 8 
+                    EDCBA.next = EDCBA + 8
                 elif(i == 5):
                     EDCBA.next = EDCBA + 4
                 elif(i == 6):
-                    EDCBA.next = EDCBA + 2 
+                    EDCBA.next = EDCBA + 2
                 elif(i == 7):
-                    EDCBA.next = EDCBA + 1
+                    EDCBA.next = EDCBA + 1 # EDCBA si suma +1, pero al llehar al otro lado, no esta actualizado.
         i.next = i + 1
 
     return seq

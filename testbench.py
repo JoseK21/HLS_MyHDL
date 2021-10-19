@@ -36,7 +36,7 @@ def testbench(hdl):
     disparity = Signal(intbv(0, min=-7, max=7))
 
     # -----------------------
-    data = intbv(1)
+    data = intbv(255) # Los pares funcionan bien, los impares no (le falta +1)
     # -----------------------
 
     HGF = Signal(intbv(0)[3:0])
@@ -65,14 +65,14 @@ def testbench(hdl):
     def stimulus():
         print('\nInput: ', end='')
 
-        for i in range(10):
+        for i in range(9):
             if(i > 0):
                 print(int(bit_in), end='')
             if(i == 3):
                 print(' ', end='')
 
             yield clock.negedge # negedge } posedge
-        # yield delay(10)
+
         print('\nOutput: ', end='')
 
         print(format(int(abcdei), '06b'), format(int(fghj), '04b'))
