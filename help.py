@@ -17,7 +17,7 @@ _5B6BEncodingValues = [39, 29, 45, 49, 53, 41, 25, 56, 57, 37, 21, 52, 13, 44, 2
 
 @block
 def newBit(data, clock, enable, reset, bit_in):
-    counter = Signal(modbv(7, min=0, max=8))
+    counter = Signal(modbv(0, min=0, max=16))
 
     @always_seq(clock.posedge, reset=reset)
     def seq():
@@ -29,14 +29,12 @@ def newBit(data, clock, enable, reset, bit_in):
 
 @block
 def convert10b(clock, reset, HGF, EDCBA, fghj, abcdei):
-    i = Signal(modbv(0, min=0, max=8))
-
-    mem3_4 = [intbv(4), intbv(9), intbv(5), intbv(3), intbv(2), intbv(10), intbv(6), intbv(1)]
-    mem5_6 = [Signal(intbv(i)[5:]) for i in _5B6BEncodingValues]
-
+    i = Signal(modbv(0, min=0, max=16))
 
     @always_seq(clock.negedge, reset=reset)
     def seq():
+        # print('i >', i)
+
         if(i == 2): # 3er item
             if(HGF == 0):
                 fghj.next = 4
@@ -54,8 +52,8 @@ def convert10b(clock, reset, HGF, EDCBA, fghj, abcdei):
                 fghj.next = 6
             elif(HGF == 7):
                 fghj.next = 1              
-        if(i == 7): # 8to item
-            # print('--------iiiiiiiii-----------', _5B6BEncodingValues[int(EDCBA)])
+        if(i == 8): # 8to item
+            # print('\n >>> ', int(EDCBA))
             if(EDCBA == 0):
                 abcdei.next = 39
             elif(EDCBA == 1):
@@ -127,7 +125,7 @@ def convert10b(clock, reset, HGF, EDCBA, fghj, abcdei):
 
 @block
 def convert8b10b(clock, bit_in, reset, HGF, EDCBA):
-    i = Signal(modbv(0, min=0, max=8))
+    i = Signal(modbv(0, min=0, max=16))
 
     @always_seq(clock.posedge, reset=reset)
     def seq():
@@ -151,8 +149,6 @@ def convert8b10b(clock, bit_in, reset, HGF, EDCBA):
                     EDCBA.next = EDCBA + 2 
                 elif(i == 7):
                     EDCBA.next = EDCBA + 1
-        if(i >= 8):
-            i.next = 0
         i.next = i + 1
 
     return seq

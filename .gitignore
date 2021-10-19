@@ -3,7 +3,7 @@
 *.py[cod]
 *$py.class
 
-*.pyc
+*.v
 
 # C extensions
 *.so

@@ -8,9 +8,13 @@ from help import convert8b10b, newBit, convert10b, getDisparity
 
 from datetime import datetime
 
-if os.path.exists("testbench.vcd"):
-    os.remove("testbench.vcd")
-    time.sleep(1)
+FILES = ['testbench.vcd', 'convert8b10b.v', 'convert10b.v', 'newBit.v', 'tb_newBit.v']
+
+for f in FILES:
+    if os.path.exists(f):
+        os.remove(f)
+
+time.sleep(1)
 
 random.seed(datetime.now().second)
 randrange = random.randrange
@@ -32,7 +36,7 @@ def testbench(hdl):
     disparity = Signal(intbv(0, min=-7, max=7))
 
     # -----------------------
-    data = intbv(255)
+    data = intbv(1)
     # -----------------------
 
     HGF = Signal(intbv(0)[3:0])
@@ -51,9 +55,7 @@ def testbench(hdl):
     inc_2.convert(hdl=hdl)
     inc_3.convert(hdl=hdl)
 
-    inc_4 = getDisparity(clock, reset, fghj, abcdei, disparity)
-
-    # HALF_PERIOD = delay(5)
+    # inc_4 = getDisparity(clock, reset, fghj, abcdei, disparity)
 
     @always(delay(CICLO_RELOJ)) # 10ns 
     def clockGen():
@@ -63,21 +65,21 @@ def testbench(hdl):
     def stimulus():
         print('\nInput: ', end='')
 
-        for i in range(9):
+        for i in range(10):
             if(i > 0):
                 print(int(bit_in), end='')
             if(i == 3):
                 print(' ', end='')
 
             yield clock.negedge # negedge } posedge
-        # yield delay(1)
+        # yield delay(10)
         print('\nOutput: ', end='')
 
         print(format(int(abcdei), '06b'), format(int(fghj), '04b'))
         print('Disparity: ', int(disparity))
         raise StopSimulation()
 
-    return clockGen, stimulus, inc_1, inc_2, inc_3, inc_4
+    return clockGen, stimulus, inc_1, inc_2, inc_3 #, inc_4
 
 tb = testbench(hdl='Verilog')
 tb.config_sim(trace=True)
