@@ -147,30 +147,32 @@ def convert8b10b(clock, bit_in, reset, HGF, EDCBA):
 
 @block
 def getDisparity(clock, reset, fghj, abcdei, disparity):
-    a = Signal(modbv(0, min=0, max=8))
+    a = Signal(modbv(0, min=0, max=16))
     c0 = Signal(modbv(0, min=0, max=8))
     c1 = Signal(modbv(0, min=0, max=8))  
 
-    @always_seq(clock.negedge, reset=reset)
+    @always_seq(clock.posedge, reset=reset)
     def seq():
-        if(a == 7):
-            delay(1)
+        # if(a == 7):
+        if(a == 4):
+            print('\n>>>>>>>>', fghj)
+        # if(a >= 4 and a<8):
+        #     print('\n>>>>>>>>', int(abcdei[a-4]))
 
-            print('\n>>>>>>>>', abcdei, fghj)
-            print('\n c0 >', c0)
-            print('\n c1 >', c1)       
+            # print('\n c0 >', c0)
+            # print('\n c1 >', c1)       
 
-        elif(a < 8):
-            if(a < 4):
-                if(bool(fghj[a+1:a])):
-                    c1.next = c1 + 1
-                else:
-                    c0.next = c0 + 1
-            else:
-                if(bool(abcdei[a-4+1:a-4])):
-                    c1.next = c1 + 1
-                else:
-                    c0.next = c0 + 1
+        # elif(a < 8):
+        #     if(a < 4):
+        #         if(bool(fghj[a+1:a])):
+        #             c1.next = c1 + 1
+        #         else:
+        #             c0.next = c0 + 1
+        #     else:
+        #         if(bool(abcdei[a-4+1:a-4])):
+        #             c1.next = c1 + 1
+        #         else:
+        #             c0.next = c0 + 1
 
         a.next = a + 1
 

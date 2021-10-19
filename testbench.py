@@ -27,35 +27,28 @@ CICLO_RELOJ = 10
 
 @block
 def testbench(hdl):
-    bit_in = Signal(bool(0))
-
-    enable = Signal(bool(1))
-    clock  = Signal(bool(0))
-    reset = ResetSignal(1, active=0, isasync=True)
-    # disparity = Signal(intbv(0)[2:0])
-    disparity = Signal(intbv(0, min=-7, max=7))
-
     # -----------------------
     data = intbv(255) # Los pares funcionan bien, los impares no (le falta +1)
     # -----------------------
 
+    bit_in = Signal(bool(0))
+    enable = Signal(bool(1))
+    clock  = Signal(bool(0))
+    reset = ResetSignal(1, active=0, isasync=True)
+
     HGF = Signal(intbv(0)[3:0])
     EDCBA = Signal(intbv(0)[5:0])
 
-    abcdei =  Signal(intbv(0)[6:0])
     fghj =  Signal(intbv(0)[4:0])
+    abcdei =  Signal(intbv(0)[6:0])
 
     inc_1 = newBit(data, clock, enable, reset, bit_in)
-
     inc_2 = convert8b10b(clock, bit_in, reset, HGF, EDCBA)
-
     inc_3 = convert10b(clock, reset, HGF, EDCBA, fghj, abcdei)
-
+    
     inc_1.convert(hdl=hdl)
     inc_2.convert(hdl=hdl)
     inc_3.convert(hdl=hdl)
-
-    # inc_4 = getDisparity(clock, reset, fghj, abcdei, disparity)
 
     @always(delay(CICLO_RELOJ)) # 10ns 
     def clockGen():
@@ -71,15 +64,12 @@ def testbench(hdl):
             if(i == 3):
                 print(' ', end='')
 
-            yield clock.negedge # negedge } posedge
+            yield clock.negedge
 
-        print('\nOutput: ', end='')
-
-        print(format(int(abcdei), '06b'), format(int(fghj), '04b'))
-        print('Disparity: ', int(disparity))
+        print('\nOutput: ', format(int(abcdei), '06b'), format(int(fghj), '04b'))
         raise StopSimulation()
 
-    return clockGen, stimulus, inc_1, inc_2, inc_3 #, inc_4
+    return clockGen, stimulus, inc_1, inc_2, inc_3
 
 tb = testbench(hdl='Verilog')
 tb.config_sim(trace=True)
