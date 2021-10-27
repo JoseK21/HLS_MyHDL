@@ -1,13 +1,4 @@
-import random
 from myhdl import block, always_seq, Signal, modbv, delay, always, intbv
-
-from datetime import datetime
-
-random.seed(5)
-randrange = random.randrange
-
-base2_3 = [4, 2, 1]
-base2_5 = [16, 8, 4, 2, 1]
 
 @block
 def newBit(data, clock, enable, reset, bit_in):

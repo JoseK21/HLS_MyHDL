@@ -1,12 +1,9 @@
 import os
-import random
 import time
 
-from myhdl import block, always, instance, Signal, ResetSignal, modbv, intbv, delay, StopSimulation
+from myhdl import block, always, instance, Signal, ResetSignal, intbv, delay, StopSimulation
 
-from help import convert8b10b, newBit, convert10b, getDisparity
-
-from datetime import datetime
+from help import convert8b10b, newBit, convert10b
 
 FILES = ['testbench.vcd', 'convert8b10b.v', 'convert10b.v', 'newBit.v', 'tb_newBit.v']
 
@@ -15,9 +12,6 @@ for f in FILES:
         os.remove(f)
 
 time.sleep(1)
-
-random.seed(datetime.now().second)
-randrange = random.randrange
 
 ACTIVE_LOW, INACTIVE_HIGH = 0, 1
 
@@ -28,7 +22,7 @@ CICLO_RELOJ = 10
 @block
 def testbench(hdl):
     # -----------------------
-    data = intbv(255) # Los pares funcionan bien, los impares no (le falta +1)
+    data = intbv(201)
     # -----------------------
 
     bit_in = Signal(bool(0))
@@ -71,6 +65,6 @@ def testbench(hdl):
 
     return clockGen, stimulus, inc_1, inc_2, inc_3
 
-tb = testbench(hdl='Verilog')
+tb = testbench(hdl='VHDL')
 tb.config_sim(trace=True)
 tb.run_sim()
