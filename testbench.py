@@ -22,8 +22,9 @@ CICLO_RELOJ = 10
 @block
 def testbench(hdl):
     # -----------------------
-    data = intbv(201)
+    data = intbv(185)
     # -----------------------
+    # 10111001  ': 100 111011
 
     bit_in = Signal(bool(0))
     enable = Signal(bool(1))
@@ -65,6 +66,6 @@ def testbench(hdl):
 
     return clockGen, stimulus, inc_1, inc_2, inc_3
 
-tb = testbench(hdl='VHDL')
+tb = testbench(hdl='Verilog') # VHDL OR Verilog
 tb.config_sim(trace=True)
 tb.run_sim()
