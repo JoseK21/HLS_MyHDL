@@ -3,9 +3,9 @@ import time
 
 from myhdl import block, always, instance, Signal, ResetSignal, intbv, delay, StopSimulation
 
-from help import convert8b10b, newBit, convert10b
+from help import parseBits, newBit, convertion
 
-FILES = ['testbench.vcd', 'convert8b10b.v', 'convert10b.v', 'newBit.v', 'tb_newBit.v']
+FILES = ['testbench.vcd', 'parseBits.v', 'convertion.v', 'newBit.v', 'tb_newBit.v']
 
 for f in FILES:
     if os.path.exists(f):
@@ -27,7 +27,6 @@ def testbench(hdl):
     # 10111001  ': 100 111011
 
     bit_in = Signal(bool(0))
-    enable = Signal(bool(1))
     clock  = Signal(bool(0))
     reset = ResetSignal(1, active=0, isasync=True)
 
@@ -37,9 +36,9 @@ def testbench(hdl):
     fghj =  Signal(intbv(0)[4:0])
     abcdei =  Signal(intbv(0)[6:0])
 
-    inc_1 = newBit(data, clock, enable, reset, bit_in)
-    inc_2 = convert8b10b(clock, bit_in, reset, HGF, EDCBA)
-    inc_3 = convert10b(clock, reset, HGF, EDCBA, fghj, abcdei)
+    inc_1 = newBit(data, clock, reset, bit_in)
+    inc_2 = parseBits(clock, bit_in, reset, HGF, EDCBA)
+    inc_3 = convertion(clock, reset, HGF, EDCBA, fghj, abcdei)
     
     inc_1.convert(hdl=hdl)
     inc_2.convert(hdl=hdl)
@@ -60,7 +59,7 @@ def testbench(hdl):
                 print(' ', end='')
 
             yield clock.negedge
-
+        reset.next = 0
         print('\nOutput: ', format(int(abcdei), '06b'), format(int(fghj), '04b'))
         raise StopSimulation()
 
