@@ -22,7 +22,7 @@ CICLO_RELOJ = 10
 @block
 def testbench(hdl):
     # -----------------------
-    data = intbv(185)
+    data = intbv(255)
     # -----------------------
     # 10111001  ': 100 111011
 
@@ -59,8 +59,8 @@ def testbench(hdl):
                 print(' ', end='')
 
             yield clock.negedge
-        reset.next = 0
         print('\nOutput: ', format(int(abcdei), '06b'), format(int(fghj), '04b'))
+        reset.next = 0
         raise StopSimulation()
 
     return clockGen, stimulus, inc_1, inc_2, inc_3

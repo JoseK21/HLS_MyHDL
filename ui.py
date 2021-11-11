@@ -6,23 +6,35 @@
 from tkinter import *
 
 # import filedialog module
+
+
 from tkinter import filedialog
+
+from regex import plot_
 
 # Function for opening the
 # file explorer window
 
+filename = ''
 
 def browseFiles():
-    filename = filedialog.askopenfilename(initialdir="/", title="Select a File", filetypes=(("Text files", "*.txt*"), ("all files", "*.*")))
+    global filename
+    filename = filedialog.askopenfilename(initialdir="/", title="Select a File", filetypes=(("Text files", "*.vcd*"), ("all files", "*.*")))
 
+    
     # Change label contents
     label_file_explorer.configure(text="File Opened: " + filename, bg = 'white')
 
-def browseFiles():
-    filename = filedialog.askopenfilename(initialdir="/", title="Select a File", filetypes=(("Text files", "*.txt*"), ("all files", "*.*")))
+# def browseFiles():
+#     filename = filedialog.askopenfilename(initialdir="/", title="Select a File", filetypes=(("Text files", "*.txt*"), ("all files", "*.*")))
 
-    # Change label contents
-    label_file_explorer.configure(text="File Opened: " + filename, bg = 'white')
+#     # Change label contents
+#     label_file_explorer.configure(text="File Opened: " + filename, bg = 'white')
+
+def execute():
+    global filename
+    print(filename)
+    plot_(filename)
 
 
 # Create the root window
@@ -45,7 +57,7 @@ label_file_explorer = Label(window, text="...", width=50, height=1)
 button_explore = Button(window, text="Choose Files", command=browseFiles)
 button_explore.configure(bg = 'white')
 
-button_exit = Button(window, text="Run", command=exit)
+button_exit = Button(window, text="Run", command=execute)
 
 spinner = Spinbox( window, activebackground="red" )
 
