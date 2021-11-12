@@ -100,7 +100,6 @@ def execute():
     else:
         messagebox.showinfo(message="Error> Wrong extension | Should be.py", title="Error")
 
-
 label_file_explorer = Label(window, text="...", width=50, height=1)
 
 logs = scrolledtext.ScrolledText(window, height=20, width=80)
