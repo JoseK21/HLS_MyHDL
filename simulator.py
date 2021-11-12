@@ -13,12 +13,10 @@ def simulator(YY, maxXX):
     ax.set_ylabel('Signals')
     ax.set_xlabel('Time (ns)')
 
-    x = list(range(0, maxXX + 1, 10))
+    x = list(range(0, maxXX + 20, 10))
 
     y = [""] + YY
     y = y + [""]
-
-    print('--------------------------->', y)
 
     values = range(len(x))
     valuesY = range(len(y))
