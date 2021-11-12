@@ -6,6 +6,8 @@ os.system('cls')
 
 def plot_(path):
 
+    print('>>>', path)
+
     file1 = open(path, 'r')
     Lines = file1.readlines()
     
@@ -17,6 +19,8 @@ def plot_(path):
 
     pattern3 = "\$var reg \d (\W) ({}) \$end".format(listParams)
 
+    pattern4 = "\$var reg \d (\W) (\w+) \$end"
+
     pDumpvars = "\$dumpvars"
 
     pFranco = "^#(\d+)$"
@@ -25,6 +29,7 @@ def plot_(path):
 
     listSymbol_ = []
     listParams_ = []
+    listSymbol_TOTAL = []
 
     listValues = {}
 
@@ -40,7 +45,7 @@ def plot_(path):
         resultDumpvars = re.match(pDumpvars, textLine)
 
         if(resultDumpvars):
-            print(listSymbol_)
+            # print(listSymbol_)
             pValues = "(\w+|\d)\s*({})".format('|'.join(listSymbol_))
             # franco = "0"
 
@@ -60,7 +65,7 @@ def plot_(path):
 
                 KEYwORD = listParams_[listSymbol_.index(key)]
 
-                print(KEYwORD)
+                # print(KEYwORD)
 
                 currentvalue = franco + '-' +value
 
@@ -80,12 +85,23 @@ def plot_(path):
                 listSymbol_.append(simbol) if simbol not in listSymbol_ else listSymbol_
                 listParams_.append(param) if param not in listParams_ else listParams_
 
+            result4 = re.match(pattern4, textLine)         
 
-    print('>>> listSymbol_: ', listSymbol_)
-    print('>>> listParams_: ', listParams_)
+            if result4:
+                simbol = result4.group(2)
 
-    print('>>> listValues: ', listValues)
+                listSymbol_TOTAL.append(simbol) if simbol not in listSymbol_TOTAL else listSymbol_TOTAL
+
+    # print('>>> listSymbol_: ', listSymbol_)
+    # print('>>> listParams_: ', listParams_)
+
+    # print('>>> listValues: ', listValues)
+
+    return listSymbol_TOTAL
+
+    # print('>>> listSymbol_TOTAL: ', listSymbol_TOTAL)
 
 
 
-plot_('C:\\Users\\JoseK21\\Desktop\\hls\\testbench.vcd')
+
+# plot_('C:\\Users\\JoseK21\\Desktop\\hls\\testbench.vcd')
