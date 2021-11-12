@@ -89,14 +89,15 @@ def execute():
         
         logs['state'] = 'disable'
 
-        vars, franco = plot_(filename.replace(".py", ".vcd"))
+        filename2 = os.path.basename(filename)
+        print(filename2)
+        vars, franco = plot_( "./"+ filename2.replace(".py", ".vcd"))
 
         if(franco == "-1"):
             messagebox.showinfo(message="Error> file .vcd doesn't exits | myHDL logic is wrong ", title="Error")
         else:
             openNewWindow(vars, franco)   
     else:
-        print('eRRORRRRR ')
         messagebox.showinfo(message="Error> Wrong extension | Should be.py", title="Error")
 
 
