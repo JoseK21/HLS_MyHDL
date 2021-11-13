@@ -4,108 +4,70 @@ import os
 
 os.system('cls')
 
-def plot_(path):
-
-    # print('>>>', path)
-
-    if(os.path.isfile(path)):
-        file1 = open(path, 'r')
-        # VALIR QUE EXIST EL FILE
-        Lines = file1.readlines()
+def plot_(pathname):
+    if(os.path.isfile(pathname)):
+        fileVCD = open(pathname, 'r')
+        lineText = fileVCD.readlines()
         
         count = 0
 
-        find = ['HGF', 'EDCBA', 'clock', 'abcdei', 'fghj']
+        regexReg_Symbol_Signal = "\$var reg \d (\W) (\w+) \$end"
+        regexSearch_By_Symbol = "(\w+|\d) (\W)"
+        regexEdges_Clock = "^#(\d+)$"
+        regexDumpvars = "\$dumpvars"
 
-        listParams = '|'.join(find)
-
-        pattern3 = "\$var reg \d (\W) ({}) \$end".format(listParams)
-
-        pattern4 = "\$var reg \d (\W) (\w+) \$end"
-
-        pDumpvars = "\$dumpvars"
-
-        pFranco = "^#(\d+)$"
-
-        pValues = ""
-
-        listSymbol_ = []
-        listParams_ = []
-        listSymbol_TOTAL = []
+        arraySymbols = []
+        arraySignals = []
 
         listValues = {}
 
         isOnDump = False
 
-        franco = "0"
+        lastEdgeValue = "0"
         
-        for line in Lines:
+        for line in lineText:
             count += 1
-
             textLine = line.strip()
 
-            resultDumpvars = re.match(pDumpvars, textLine)
+            hasMatch_With_Dumpvars = re.match(regexDumpvars, textLine)
+            hasMatch_With_Edge = re.match(regexEdges_Clock, textLine)
 
-            if(resultDumpvars):
-                # print(listSymbol_)
-                pValues = "(\w+|\d)\s*({})".format('|'.join(listSymbol_))
-                # franco = "0"
-
+            if(hasMatch_With_Dumpvars):
                 isOnDump = True
 
-            resultFranco = re.match(pFranco, textLine)
-
-            if resultFranco:
-                franco = resultFranco.group(1)
+            if hasMatch_With_Edge:
+                lastEdgeValue = hasMatch_With_Edge.group(1)
 
             if(isOnDump):
-                result3 = re.match(pValues, textLine)
+                hasMatch_Searching_Symbol = re.match(regexSearch_By_Symbol, textLine)
 
-                if result3:
-                    value = result3.group(1)
-                    key = result3.group(2)
+                if hasMatch_Searching_Symbol:
+                    valueDump = hasMatch_Searching_Symbol.group(1)
+                    symbolDump = hasMatch_Searching_Symbol.group(2)
 
-                    KEYwORD = listParams_[listSymbol_.index(key)]
+                    if(symbolDump in arraySymbols):
+                        KEYwORD = arraySignals[arraySymbols.index(symbolDump)]
 
-                    # print(KEYwORD)
+                        currentvalue = lastEdgeValue + '-' +valueDump
 
-                    currentvalue = franco + '-' +value
-
-                    if(KEYwORD in listValues):
-                        preValues = listValues[KEYwORD]
-                        listValues[KEYwORD] = preValues + [currentvalue]
-                    else:
-                        listValues[KEYwORD] = [currentvalue]
-
+                        if(KEYwORD in listValues):
+                            preValues = listValues[KEYwORD]
+                            listValues[KEYwORD] = preValues + [currentvalue]
+                        else:
+                            listValues[KEYwORD] = [currentvalue]
             else:
-                result3 = re.match(pattern3, textLine)
+                hasMatch_With_Symbol_Signal = re.match(regexReg_Symbol_Signal, textLine)
 
-                if result3:
-                    simbol = result3.group(1)
-                    param = result3.group(2)
+                if hasMatch_With_Symbol_Signal:
+                    _symbol_ = hasMatch_With_Symbol_Signal.group(1)
+                    _signal_ = hasMatch_With_Symbol_Signal.group(2)
 
-                    listSymbol_.append(simbol) if simbol not in listSymbol_ else listSymbol_
-                    listParams_.append(param) if param not in listParams_ else listParams_
+                    if(_signal_ not in arraySignals):
+                        arraySignals.append(_signal_) if _signal_ not in arraySignals else arraySignals
+                        arraySymbols.append(_symbol_) if _symbol_ not in arraySymbols else arraySymbols
 
-                result4 = re.match(pattern4, textLine)         
-
-                if result4:
-                    simbol = result4.group(2)
-
-                    listSymbol_TOTAL.append(simbol) if simbol not in listSymbol_TOTAL else listSymbol_TOTAL
-
-        # print('>>> listSymbol_: ', listSymbol_)
-        # print('>>> listParams_: ', listParams_)
-        # print('>>> listValues: ', listValues)
-        # print('>>> franco: ', franco)
-
-
-        return [listSymbol_TOTAL, franco]
+        return [arraySignals, arraySymbols, listValues, lastEdgeValue]
     else:
-        return [[], "-1"]
+        return [[], [], {},  "-1"]
 
-
-
-
-
-plot_('C:\\Users\\JoseK21\\Desktop\\hls\\testbench.vcd')
+# plot_('C:\\Users\\JoseK21\\Desktop\\hls\\testbench.vcd')

@@ -2,7 +2,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 
 
-def simulator(YY, maxXX):
+def simulator(arraySelectedSignals, listValues, lastEdgeValue):
     fig = plt.figure(figsize=[15, 8])
     ax = fig.add_subplot()  # 111
 
@@ -13,25 +13,30 @@ def simulator(YY, maxXX):
     ax.set_ylabel('Signals')
     ax.set_xlabel('Time (ns)')
 
-    x = list(range(0, maxXX + 20, 10))
+    x = list(range(0, lastEdgeValue + 20, 10))
 
-    y = [""] + YY
+    y = [""] + arraySelectedSignals
     y = y + [""]
 
     values = range(len(x))
     valuesY = range(len(y))
 
     counter = 1
-    for a in YY:
+    for selected_signal in arraySelectedSignals:
         rect1 = matplotlib.patches.Rectangle((0, counter - middleHeigth), 50, heigth, color='green', joinstyle='miter')
 
+        if(listValues.get(selected_signal) != None):
+            for binaryValue in listValues.get(selected_signal):
+                print('--------> ', binaryValue.split('-'))
+                xEdge, bValue = binaryValue.split('-')
+                plt.text(int(xEdge) // 10, counter - 0.05, bValue)
+         
         ax.add_patch(rect1)
         counter += 1
 
     plt.grid(axis='x')
-    plt.xticks(values,x)
+    plt.xticks(values, x)
     plt.yticks(valuesY, y)
-    plt.text(1,1,'011001')
-    plt.annotate('1010', xy=(1,1), xytext=(2,2), arrowprops=dict(facecolor='black', arrowstyle="<->"))
+
 
     plt.show()
