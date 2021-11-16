@@ -12,7 +12,7 @@ def plot_(pathname):
         count = 0
 
         regexReg_Symbol_Signal = "\$var reg \d (\W) (\w+) \$end"
-        regexSearch_By_Symbol = "(\w+|\d) (\W)"
+        regexSearch_By_Symbol = "(\w+|\d)\s*(\W)"
         regexEdges_Clock = "^#(\d+)$"
         regexDumpvars = "\$dumpvars"
 
@@ -38,6 +38,7 @@ def plot_(pathname):
             if hasMatch_With_Edge:
                 lastEdgeValue = hasMatch_With_Edge.group(1)
 
+            # Lectura de la data para generar las senales visuales
             if(isOnDump):
                 hasMatch_Searching_Symbol = re.match(regexSearch_By_Symbol, textLine)
 
@@ -55,6 +56,8 @@ def plot_(pathname):
                             listValues[KEYwORD] = preValues + [currentvalue]
                         else:
                             listValues[KEYwORD] = [currentvalue]
+    
+            # Analisis de variables utilizadas 
             else:
                 hasMatch_With_Symbol_Signal = re.match(regexReg_Symbol_Signal, textLine)
 

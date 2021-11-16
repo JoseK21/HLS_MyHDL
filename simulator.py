@@ -27,7 +27,6 @@ def simulator(arraySelectedSignals, listValues, lastEdgeValue):
 
         if(listValues.get(selected_signal) != None):
             for binaryValue in listValues.get(selected_signal):
-                print('--------> ', binaryValue.split('-'))
                 xEdge, bValue = binaryValue.split('-')
                 plt.text(int(xEdge) // 10, counter - 0.05, bValue)
          

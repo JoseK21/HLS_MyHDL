@@ -29,7 +29,7 @@ def browseFiles():
 
     
     # Change label contents
-    label_file_explorer.configure(text="File Opened: " + filename, bg = 'white')
+    label_file_explorer.configure(text="File: " + filename, bg = 'white')
 
 def print_selection(variable):
     if(variable in arraySelectedSignals):
@@ -73,7 +73,6 @@ def execute():
         logs['state'] = 'disable'
 
         filename2 = os.path.basename(filename)
-        # print(filename2)
         arraySignals, arraySymbols, listValues, lastEdgeValue = plot_( "./"+ filename2.replace(".py", ".vcd"))
 
         if(lastEdgeValue == "-1"):

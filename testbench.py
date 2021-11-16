@@ -21,8 +21,8 @@ CICLO_RELOJ = 10
 
 @block
 def testbench(hdl):
-    data = intbv(255)
-    # 10111001  ': 100 111011
+    data = intbv(150)
+    # 10111001  ': 10010110
 
     bit_in = Signal(bool(0))
     clock  = Signal(bool(0))
